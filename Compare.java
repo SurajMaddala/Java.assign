@@ -10,9 +10,9 @@ public class Compare2
 {
 public static void main(String[] args) throws IOException
 {
-BufferedReader reader1 = new BufferedReader(new FileReader("C:\\Users\\DSREEKUM\\Downloads\\s.txt"));
+BufferedReader reader1 = new BufferedReader(new FileReader("C:\\Users\\SURAMADD\\Downloads\\s.txt"));
 
-BufferedReader reader2 = new BufferedReader(new FileReader("C:\\Users\\DSREEKUM\\Downloads\\A.txt"));
+BufferedReader reader2 = new BufferedReader(new FileReader("C:\\Users\\SURAMADD\\Downloads\\A.txt"));
 
 String line1 = reader1.readLine();
 
