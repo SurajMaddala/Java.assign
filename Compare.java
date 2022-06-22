@@ -1,62 +1,78 @@
-package Utils;
+package excel;
 
-
-
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
-public class Compare2
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Comparison 
 {
-public static void main(String[] args) throws IOException
-{
-BufferedReader reader1 = new BufferedReader(new FileReader("C:\\Users\\SURAMADD\\Downloads\\s.txt"));
+	public static void main(String[] args) throws IOException, InvalidFormatException {
+		
+		File file1 = new File("data\\BankSide.xlsx");   //creating a new file instance  
+		File file2= new File("data\\userDetails.xlsx");
 
-BufferedReader reader2 = new BufferedReader(new FileReader("C:\\Users\\SURAMADD\\Downloads\\A.txt"));
+		FileInputStream f1 = new FileInputStream(file1);   //obtaining bytes from the file  
+		FileInputStream f2 = new FileInputStream(file2);
 
-String line1 = reader1.readLine();
+		XSSFWorkbook wb1 = new XSSFWorkbook(f1);
+		XSSFWorkbook wb2 = new XSSFWorkbook(f2);
 
-String line2 = reader2.readLine();
 
-boolean areEqual = true;
+		XSSFSheet s1=wb1.getSheet("bank");
+		XSSFSheet s2=wb2.getSheet("user");
 
-int lineNum = 1;
 
-while (line1 != null || line2 != null)
-{
-if(line1 == null || line2 == null)
-{
-areEqual = false;
+		int rowcount1=s1.getPhysicalNumberOfRows();
+		int  rowcount2=s2.getPhysicalNumberOfRows();
 
-break;
-}
-else if(! line1.equalsIgnoreCase(line2))
-{
-areEqual = false;
 
-break;
-}
+		if( rowcount1== rowcount2) 
+		{
 
-line1 = reader1.readLine();
+			for(int i=0;i< rowcount1 ;i++)
 
-line2 = reader2.readLine();
+			{
+				for(int j=1 ;j < rowcount2 ;i++)
+				{
 
-lineNum++;
-}
+					XSSFRow r1=s1.getRow(i);
+					XSSFRow r2=s2.getRow(i);
 
-if(areEqual)
-{
-System.out.println("Two files have same content.");
-}
-else
-{
-System.out.println("Two files have different content. They differ at line "+lineNum);
 
-System.out.println("File1 has "+line1+" and File2 has "+line2+" at line "+lineNum);
-}
+					XSSFCell c1=r1.getCell(i);
+					XSSFCell c2=r2.getCell(i);
 
-reader1.close();
+					c1.setCellType(CellType.STRING);
+					String str1=c1.getStringCellValue();
 
-reader2.close();
-}
+
+					c2.setCellType(CellType.STRING);
+					String str2=c2.getStringCellValue();
+
+					if(str1.equals(str2)) 
+					{
+						System.out.println(" Match    |    "+str1 +"  ==>  "+str2);
+						System.out.println("---------------------------------------------------------------------------------------------");
+						
+					}
+					else {
+						
+
+						System.out.println("Mismatch |    "+str1 +"  ==>  "+str2);
+						System.out.println("---------------------------------------------------------------------------------------------");
+					}
+				}
+			}
+		}
+
+
+	}
+
 }
